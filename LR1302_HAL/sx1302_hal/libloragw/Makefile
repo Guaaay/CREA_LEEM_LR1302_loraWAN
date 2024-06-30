@@ -36,7 +36,9 @@ all: 	libloragw.a \
 		test_loragw_gps \
 		test_loragw_toa \
 		test_loragw_sx1261_rssi\
-		test_led
+		test_led \
+		transmitter \
+		receiver
 
 clean:
 	rm -f libloragw.a
@@ -132,6 +134,12 @@ libloragw.a: $(OBJDIR)/loragw_spi.o \
 	$(AR) rcs $@ $^
 
 ### test programs
+
+transmitter: app/transmitter.c libloragw.a
+	$(CC) $(CFLAGS) -L. -L../libtools $< -o $@ $(LIBS)
+
+receiver: app/receiver.c libloragw.a
+	$(CC) $(CFLAGS) -L. -L../libtools $< -o $@ $(LIBS)
 
 test_loragw_com: tst/test_loragw_com.c libloragw.a
 	$(CC) $(CFLAGS) -L. -L../libtools $< -o $@ $(LIBS)

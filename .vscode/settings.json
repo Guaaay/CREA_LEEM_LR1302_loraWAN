@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "loragw_reg.h": "c",
-        "parson.h": "c"
+        "parson.h": "c",
+        "limits": "c"
     }
 }
