@@ -74,41 +74,15 @@ term() {
     fi
 }
 
-
-
-start_rp5() {
-    pinctrl set $SX1302_RESET_PIN op
-    pinctrl set $SX1302_POWER_EN_PIN op
-    pinctrl set $SX1261_RESET_PIN op
-    pinctrl set $AD5338R_RESET_PIN op
-}
-
-
-
-reset_rp15() {
-        pinctrl set $SX1302_POWER_EN_PIN dh; WAIT_GPIO
-        pinctrl set $SX1302_RESET_PIN dh; WAIT_GPIO
-        pinctrl set $SX1302_RESET_PIN dl; WAIT_GPIO
-        pinctrl set $SX1261_RESET_PIN dl; WAIT_GPIO
-        pinctrl set $SX1261_RESET_PIN dh; WAIT_GPIO
-        pinctrl set $AD5338R_RESET_PIN dl; WAIT_GPIO
-        pinctrl set $AD5338R_RESET_PIN dh; WAIT_GPIO
-}
-
-
-
 case "$1" in
     start)
-    start_rp5
-    reset_rp15
-    # term # just in case
-    # init
-    # reset
+    term # just in case
+    init
+    reset
     ;;
     stop)
-    reset_rp15
-    # reset
-    # term
+    reset
+    term
     ;;
     *)
     echo "Usage: $0 {start|stop}"
