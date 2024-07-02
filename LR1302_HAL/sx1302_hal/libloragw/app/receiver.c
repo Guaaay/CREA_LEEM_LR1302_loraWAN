@@ -403,8 +403,8 @@ int main(int argc, char **argv)
                     // printf("  rssi_chan:%.1f\n", rxpkt[i].rssic);
                     // printf("  rssi_sig :%.1f\n", rxpkt[i].rssis);
                     // printf("  crc:      0x%04X\n", rxpkt[i].crc);
-                    for (j = 0; j < rxpkt[i].size; j++) {
-                        printf("%c ", rxpkt[i].payload[j]);
+                    for (j = 9; j < rxpkt[i].size; j++) {
+                        printf("%c", rxpkt[i].payload[j]);
                     }
                     printf("\n");
                 }
