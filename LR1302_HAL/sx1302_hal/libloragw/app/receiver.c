@@ -386,7 +386,7 @@ int main(int argc, char **argv)
             if (nb_pkt == 0) {
                 wait_ms(1);
             } else {
-                for (i = 0; i < nb_pkt; i++) {
+                for (i = 0; i < 1; i++) {
                     if (rxpkt[i].status == STAT_CRC_OK) {
                         nb_pkt_crc_ok += 1;
                     }
