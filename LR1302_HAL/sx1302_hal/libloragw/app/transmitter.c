@@ -496,7 +496,7 @@ int main(int argc, char **argv)
     }
     char buffer[246];
     //BUCLE PRINCIPAL DE LECTURA DE STDIN:
-    while(1){
+    while((quit_sig != 1) && (exit_sig != 1)){
         //Leemos bytes de stdin y los transmitimos
         int nbytes = read(STDIN_FILENO, buffer, sizeof(buffer));
         if (nbytes > 0) {
@@ -578,10 +578,11 @@ int main(int argc, char **argv)
                         break;
                 }
 
-                pkt.size = (size == 0) ? (uint8_t)RAND_RANGE(9, 255) : size;
+                pkt.size = 9 + nbytes;//(size == 0) ? (uint8_t)RAND_RANGE(9, 255) : size;
 
                 pkt.payload[6] = (uint8_t)(i >> 0); /* FCnt */
                 pkt.payload[7] = (uint8_t)(i >> 8); /* FCnt */
+                printf("Sending...\n");
                 x = lgw_send(&pkt);
                 if (x != 0) {
                     printf("ERROR: failed to send packet\n");
@@ -601,19 +602,19 @@ int main(int argc, char **argv)
 
             //printf( "\nNb packets sent: %u (%u)\n", i, cnt_loop + 1 );
 
-            /* Stop the gateway */
-            x = lgw_stop();
-            if (x != 0) {
-                printf("ERROR: failed to stop the gateway\n");
-            }
+            // /* Stop the gateway */
+            // x = lgw_stop();
+            // if (x != 0) {
+            //     printf("ERROR: failed to stop the gateway\n");
+            // }
 
-            if (com_type == LGW_COM_SPI) {
-                /* Board reset */
-                if (system("./reset_lgw.sh stop") != 0) {
-                    printf("ERROR: failed to reset SX1302, check your reset_lgw.sh script\n");
-                    exit(EXIT_FAILURE);
-                }
-            }
+            // if (com_type == LGW_COM_SPI) {
+            //     /* Board reset */
+            //     if (system("./reset_lgw.sh stop") != 0) {
+            //         printf("ERROR: failed to reset SX1302, check your reset_lgw.sh script\n");
+            //         exit(EXIT_FAILURE);
+            //     }
+            // }
 
             
         }

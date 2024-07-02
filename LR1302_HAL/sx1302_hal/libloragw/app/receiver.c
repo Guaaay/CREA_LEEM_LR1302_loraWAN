@@ -379,40 +379,40 @@ int main(int argc, char **argv)
         /* Loop until we have enough packets with CRC OK */
         printf("Waiting for packets...\n");
         nb_pkt_crc_ok = 0;
-        while (((nb_pkt_crc_ok < nb_loop) || nb_loop == 0) && (quit_sig != 1) && (exit_sig != 1)) {
+        while ((quit_sig != 1) && (exit_sig != 1)) {
             /* fetch N packets */
             nb_pkt = lgw_receive(ARRAY_SIZE(rxpkt), rxpkt);
 
             if (nb_pkt == 0) {
-                wait_ms(10);
+                wait_ms(2);
             } else {
                 for (i = 0; i < nb_pkt; i++) {
                     if (rxpkt[i].status == STAT_CRC_OK) {
                         nb_pkt_crc_ok += 1;
                     }
-                    printf("\n----- %s packet -----\n", (rxpkt[i].modulation == MOD_LORA) ? "LoRa" : "FSK");
-                    printf("  count_us: %u\n", rxpkt[i].count_us);
-                    printf("  size:     %u\n", rxpkt[i].size);
-                    printf("  chan:     %u\n", rxpkt[i].if_chain);
-                    printf("  status:   0x%02X\n", rxpkt[i].status);
-                    printf("  datr:     %u\n", rxpkt[i].datarate);
-                    printf("  codr:     %u\n", rxpkt[i].coderate);
-                    printf("  rf_chain  %u\n", rxpkt[i].rf_chain);
-                    printf("  freq_hz   %u\n", rxpkt[i].freq_hz);
-                    printf("  snr_avg:  %.1f\n", rxpkt[i].snr);
-                    printf("  rssi_chan:%.1f\n", rxpkt[i].rssic);
-                    printf("  rssi_sig :%.1f\n", rxpkt[i].rssis);
-                    printf("  crc:      0x%04X\n", rxpkt[i].crc);
+                    // printf("\n----- %s packet -----\n", (rxpkt[i].modulation == MOD_LORA) ? "LoRa" : "FSK");
+                    // printf("  count_us: %u\n", rxpkt[i].count_us);
+                    // printf("  size:     %u\n", rxpkt[i].size);
+                    // printf("  chan:     %u\n", rxpkt[i].if_chain);
+                    // printf("  status:   0x%02X\n", rxpkt[i].status);
+                    // printf("  datr:     %u\n", rxpkt[i].datarate);
+                    // printf("  codr:     %u\n", rxpkt[i].coderate);
+                    // printf("  rf_chain  %u\n", rxpkt[i].rf_chain);
+                    // printf("  freq_hz   %u\n", rxpkt[i].freq_hz);
+                    // printf("  snr_avg:  %.1f\n", rxpkt[i].snr);
+                    // printf("  rssi_chan:%.1f\n", rxpkt[i].rssic);
+                    // printf("  rssi_sig :%.1f\n", rxpkt[i].rssis);
+                    // printf("  crc:      0x%04X\n", rxpkt[i].crc);
                     for (j = 0; j < rxpkt[i].size; j++) {
-                        printf("%02X ", rxpkt[i].payload[j]);
+                        printf("%c ", rxpkt[i].payload[j]);
                     }
                     printf("\n");
                 }
-                printf("Received %d packets (total:%lu)\n", nb_pkt, nb_pkt_crc_ok);
+                //printf("Received %d packets (total:%lu)\n", nb_pkt, nb_pkt_crc_ok);
             }
         }
 
-        printf( "\nNb valid packets received: %lu CRC OK (%lu)\n", nb_pkt_crc_ok, cnt_loop );
+        //printf( "\nNb valid packets received: %lu CRC OK (%lu)\n", nb_pkt_crc_ok, cnt_loop );
 
         /* Stop the gateway */
         x = lgw_stop();
