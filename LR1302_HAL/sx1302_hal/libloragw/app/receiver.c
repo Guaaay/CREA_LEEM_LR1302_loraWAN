@@ -384,7 +384,7 @@ int main(int argc, char **argv)
             nb_pkt = lgw_receive(ARRAY_SIZE(rxpkt), rxpkt);
 
             if (nb_pkt == 0) {
-                wait_ms(2);
+                wait_ms(1);
             } else {
                 for (i = 0; i < nb_pkt; i++) {
                     if (rxpkt[i].status == STAT_CRC_OK) {
@@ -403,10 +403,11 @@ int main(int argc, char **argv)
                     // printf("  rssi_chan:%.1f\n", rxpkt[i].rssic);
                     // printf("  rssi_sig :%.1f\n", rxpkt[i].rssis);
                     // printf("  crc:      0x%04X\n", rxpkt[i].crc);
-                    for (j = 9; j < rxpkt[i].size; j++) {
-                        printf("%c", rxpkt[i].payload[j]);
-                    }
-                    printf("\n");
+                    //for (j = 9; j < rxpkt[i].size; j++) {
+                        write(STDOUT_FILENO, rxpkt[i].payload, rxpkt[i].size);
+                    //    printf("%c", rxpkt[i].payload[j]);
+                    //}
+                    //printf("\n");
                 }
                 //printf("Received %d packets (total:%lu)\n", nb_pkt, nb_pkt_crc_ok);
             }

@@ -590,7 +590,7 @@ int main(int argc, char **argv)
                 }
                 /* wait for packet to finish sending */
                 do {
-                    wait_ms(5);
+                    wait_ms(1);
                     lgw_status(pkt.rf_chain, TX_STATUS, &tx_status); /* get TX status */
                 } while ((tx_status != TX_FREE) && (quit_sig != 1) && (exit_sig != 1));
 
