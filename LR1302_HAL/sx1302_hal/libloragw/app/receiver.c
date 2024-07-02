@@ -403,9 +403,12 @@ int main(int argc, char **argv)
                     // printf("  rssi_chan:%.1f\n", rxpkt[i].rssic);
                     // printf("  rssi_sig :%.1f\n", rxpkt[i].rssis);
                     // printf("  crc:      0x%04X\n", rxpkt[i].crc);
-                    //for (j = 9; j < rxpkt[i].size; j++) {
-                        write(STDOUT_FILENO, rxpkt[i].payload, rxpkt[i].size);
-                    //    printf("%c", rxpkt[i].payload[j]);
+                    char mensaje[255];
+                    for(int j = 9; j < rxpkt[i].size + 9; j++){
+                        mensaje[j-9] = rxpkt[i].payload[j];
+                    }
+
+                    write(STDOUT_FILENO, mensaje, rxpkt[i].size - 9);
                     //}
                     //printf("\n");
                 }
