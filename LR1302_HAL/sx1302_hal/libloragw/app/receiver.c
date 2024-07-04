@@ -68,23 +68,23 @@ static void sig_handler(int sigio) {
 }
 
 void usage(void) {
-    printf("Library version information: %s\n", lgw_version_info());
-    printf("Available options:\n");
-    printf(" -h print this help\n");
-    printf(" -u            set COM type as USB (default is SPI)\n");
-    printf(" -d <path>     COM path to be used to connect the concentrator\n");
-    printf("               => default path: " COM_PATH_DEFAULT "\n");
-    printf(" -k <uint>     Concentrator clock source (Radio A or Radio B) [0..1]\n");
-    printf(" -r <uint>     Radio type (1255, 1257, 1250)\n");
-    printf(" -a <float>    Radio A RX frequency in MHz\n");
-    printf(" -b <float>    Radio B RX frequency in MHz\n");
-    printf(" -o <float>    RSSI Offset to be applied in dB\n");
-    printf(" -n <uint>     Number of packet received with CRC OK for each HAL start/stop loop\n");
-    printf(" -z <uint>     Size of the RX packet array to be passed to lgw_receive()\n");
-    printf(" -m <uint>     Channel frequency plan mode [0:LoRaWAN-like, 1:Same frequency for all channels (-400000Hz on RF0)]\n");
-    printf(" -j            Set radio in single input mode (SX1250 only)\n");
-    printf( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" );
-    printf(" --fdd         Enable Full-Duplex mode (CN490 reference design)\n");
+    fprintf(stderr,"Library version information: %s\n", lgw_version_info());
+    fprintf(stderr,"Available options:\n");
+    fprintf(stderr," -h print this help\n");
+    fprintf(stderr," -u            set COM type as USB (default is SPI)\n");
+    fprintf(stderr," -d <path>     COM path to be used to connect the concentrator\n");
+    fprintf(stderr,"               => default path: " COM_PATH_DEFAULT "\n");
+    fprintf(stderr," -k <uint>     Concentrator clock source (Radio A or Radio B) [0..1]\n");
+    fprintf(stderr," -r <uint>     Radio type (1255, 1257, 1250)\n");
+    fprintf(stderr," -a <float>    Radio A RX frequency in MHz\n");
+    fprintf(stderr," -b <float>    Radio B RX frequency in MHz\n");
+    fprintf(stderr," -o <float>    RSSI Offset to be applied in dB\n");
+    fprintf(stderr," -n <uint>     Number of packet received with CRC OK for each HAL start/stop loop\n");
+    fprintf(stderr," -z <uint>     Size of the RX packet array to be passed to lgw_receive()\n");
+    fprintf(stderr," -m <uint>     Channel frequency plan mode [0:LoRaWAN-like, 1:Same frequency for all channels (-400000Hz on RF0)]\n");
+    fprintf(stderr," -j            Set radio in single input mode (SX1250 only)\n");
+    fprintf(stderr, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" );
+    fprintf(stderr," --fdd         Enable Full-Duplex mode (CN490 reference design)\n");
 }
 
 /* -------------------------------------------------------------------------- */
@@ -173,7 +173,7 @@ int main(int argc, char **argv)
             case 'r': /* <uint> Radio type */
                 i = sscanf(optarg, "%u", &arg_u);
                 if ((i != 1) || ((arg_u != 1255) && (arg_u != 1257) && (arg_u != 1250))) {
-                    printf("ERROR: argument parsing of -r argument. Use -h to print help\n");
+                    fprintf(stderr,"ERROR: argument parsing of -r argument. Use -h to print help\n");
                     return EXIT_FAILURE;
                 } else {
                     switch (arg_u) {
@@ -192,7 +192,7 @@ int main(int argc, char **argv)
             case 'k': /* <uint> Clock Source */
                 i = sscanf(optarg, "%u", &arg_u);
                 if ((i != 1) || (arg_u > 1)) {
-                    printf("ERROR: argument parsing of -k argument. Use -h to print help\n");
+                    fprintf(stderr,"ERROR: argument parsing of -k argument. Use -h to print help\n");
                     return EXIT_FAILURE;
                 } else {
                     clocksource = (uint8_t)arg_u;
@@ -204,7 +204,7 @@ int main(int argc, char **argv)
             case 'a': /* <float> Radio A RX frequency in MHz */
                 i = sscanf(optarg, "%lf", &arg_d);
                 if (i != 1) {
-                    printf("ERROR: argument parsing of -f argument. Use -h to print help\n");
+                    fprintf(stderr,"ERROR: argument parsing of -f argument. Use -h to print help\n");
                     return EXIT_FAILURE;
                 } else {
                     fa = (uint32_t)((arg_d*1e6) + 0.5); /* .5 Hz offset to get rounding instead of truncating */
@@ -213,7 +213,7 @@ int main(int argc, char **argv)
             case 'b': /* <float> Radio B RX frequency in MHz */
                 i = sscanf(optarg, "%lf", &arg_d);
                 if (i != 1) {
-                    printf("ERROR: argument parsing of -f argument. Use -h to print help\n");
+                    fprintf(stderr,"ERROR: argument parsing of -f argument. Use -h to print help\n");
                     return EXIT_FAILURE;
                 } else {
                     fb = (uint32_t)((arg_d*1e6) + 0.5); /* .5 Hz offset to get rounding instead of truncating */
@@ -222,7 +222,7 @@ int main(int argc, char **argv)
             case 'n': /* <uint> NUmber of packets to be received before exiting */
                 i = sscanf(optarg, "%u", &arg_u);
                 if (i != 1) {
-                    printf("ERROR: argument parsing of -n argument. Use -h to print help\n");
+                    fprintf(stderr,"ERROR: argument parsing of -n argument. Use -h to print help\n");
                     return EXIT_FAILURE;
                 } else {
                     nb_loop = arg_u;
@@ -231,7 +231,7 @@ int main(int argc, char **argv)
             case 'z': /* <uint> Size of the RX packet array to be passed to lgw_receive() */
                 i = sscanf(optarg, "%u", &arg_u);
                 if (i != 1) {
-                    printf("ERROR: argument parsing of -z argument. Use -h to print help\n");
+                    fprintf(stderr,"ERROR: argument parsing of -z argument. Use -h to print help\n");
                     return EXIT_FAILURE;
                 } else {
                     max_rx_pkt = arg_u;
@@ -240,7 +240,7 @@ int main(int argc, char **argv)
             case 'm':
                 i = sscanf(optarg, "%u", &arg_u);
                 if ((i != 1) || (arg_u > 1)) {
-                    printf("ERROR: argument parsing of -m argument. Use -h to print help\n");
+                    fprintf(stderr,"ERROR: argument parsing of -m argument. Use -h to print help\n");
                     return EXIT_FAILURE;
                 } else {
                     channel_mode = arg_u;
@@ -249,7 +249,7 @@ int main(int argc, char **argv)
             case 'o': /* <float> RSSI offset in dB */
                 i = sscanf(optarg, "%lf", &arg_d);
                 if (i != 1) {
-                    printf("ERROR: argument parsing of -o argument. Use -h to print help\n");
+                    fprintf(stderr,"ERROR: argument parsing of -o argument. Use -h to print help\n");
                     return EXIT_FAILURE;
                 } else {
                     rssi_offset = (float)arg_d;
@@ -259,12 +259,12 @@ int main(int argc, char **argv)
                 if (strcmp(long_options[option_index].name, "fdd") == 0) {
                     full_duplex = true;
                 } else {
-                    printf("ERROR: argument parsing options. Use -h to print help\n");
+                    fprintf(stderr,"ERROR: argument parsing options. Use -h to print help\n");
                     return EXIT_FAILURE;
                 }
                 break;
             default:
-                printf("ERROR: argument parsing\n");
+                fprintf(stderr,"ERROR: argument parsing\n");
                 usage();
                 return -1;
         }
@@ -278,7 +278,7 @@ int main(int argc, char **argv)
     sigaction(SIGINT, &sigact, NULL);
     sigaction(SIGTERM, &sigact, NULL);
 
-    printf("===== sx1302 HAL RX test =====\n");
+    fprintf(stderr,"===== sx1302 HAL RX test =====\n");
 
     /* Configure the gateway */
     memset( &boardconf, 0, sizeof boardconf);
@@ -289,7 +289,7 @@ int main(int argc, char **argv)
     strncpy(boardconf.com_path, com_path, sizeof boardconf.com_path);
     boardconf.com_path[sizeof boardconf.com_path - 1] = '\0'; /* ensure string termination */
     if (lgw_board_setconf(&boardconf) != LGW_HAL_SUCCESS) {
-        printf("ERROR: failed to configure board\n");
+        fprintf(stderr,"ERROR: failed to configure board\n");
         return EXIT_FAILURE;
     }
 
@@ -302,7 +302,7 @@ int main(int argc, char **argv)
     rfconf.tx_enable = false;
     rfconf.single_input_mode = single_input_mode;
     if (lgw_rxrf_setconf(0, &rfconf) != LGW_HAL_SUCCESS) {
-        printf("ERROR: failed to configure rxrf 0\n");
+        fprintf(stderr,"ERROR: failed to configure rxrf 0\n");
         return EXIT_FAILURE;
     }
 
@@ -314,7 +314,7 @@ int main(int argc, char **argv)
     rfconf.tx_enable = false;
     rfconf.single_input_mode = single_input_mode;
     if (lgw_rxrf_setconf(1, &rfconf) != LGW_HAL_SUCCESS) {
-        printf("ERROR: failed to configure rxrf 1\n");
+        fprintf(stderr,"ERROR: failed to configure rxrf 1\n");
         return EXIT_FAILURE;
     }
 
@@ -329,12 +329,12 @@ int main(int argc, char **argv)
             ifconf.rf_chain = channel_rfchain_mode1[i];
             ifconf.freq_hz = channel_if_mode1[i];
         } else {
-            printf("ERROR: channel mode not supported\n");
+            fprintf(stderr,"ERROR: channel mode not supported\n");
             return EXIT_FAILURE;
         }
         ifconf.datarate = DR_LORA_SF7;
         if (lgw_rxif_setconf(i, &ifconf) != LGW_HAL_SUCCESS) {
-            printf("ERROR: failed to configure rxif %d\n", i);
+            fprintf(stderr,"ERROR: failed to configure rxif %d\n", i);
             return EXIT_FAILURE;
         }
     }
@@ -346,14 +346,14 @@ int main(int argc, char **argv)
     ifconf.datarate = DR_LORA_SF7;
     ifconf.bandwidth = BW_250KHZ;
     if (lgw_rxif_setconf(8, &ifconf) != LGW_HAL_SUCCESS) {
-        printf("ERROR: failed to configure rxif for LoRa service channel\n");
+        fprintf(stderr,"ERROR: failed to configure rxif for LoRa service channel\n");
         return EXIT_FAILURE;
     }
 
     /* set the buffer size to hold received packets */
     struct lgw_pkt_rx_s rxpkt[max_rx_pkt];
-    printf("INFO: rxpkt buffer size is set to %u\n", max_rx_pkt);
-    printf("INFO: Select channel mode %u\n", channel_mode);
+    fprintf(stderr,"INFO: rxpkt buffer size is set to %u\n", max_rx_pkt);
+    fprintf(stderr,"INFO: Select channel mode %u\n", channel_mode);
 
     /* Loop until user quits */
     cnt_loop = 0;
@@ -364,7 +364,7 @@ int main(int argc, char **argv)
         if (com_type == LGW_COM_SPI) {
             /* Board reset */
             if (system("./reset_lgw.sh start") != 0) {
-                printf("ERROR: failed to reset SX1302, check your reset_lgw.sh script\n");
+                fprintf(stderr,"ERROR: failed to reset SX1302, check your reset_lgw.sh script\n");
                 exit(EXIT_FAILURE);
             }
         }
@@ -372,12 +372,12 @@ int main(int argc, char **argv)
         /* connect, configure and start the LoRa concentrator */
         x = lgw_start();
         if (x != 0) {
-            printf("ERROR: failed to start the gateway\n");
+            fprintf(stderr,"ERROR: failed to start the gateway\n");
             return EXIT_FAILURE;
         }
 
         /* Loop until we have enough packets with CRC OK */
-        printf("Waiting for packets...\n");
+        fprintf(stderr,"Waiting for packets...\n");
         nb_pkt_crc_ok = 0;
         while ((quit_sig != 1) && (exit_sig != 1)) {
             /* fetch N packets */
@@ -390,19 +390,19 @@ int main(int argc, char **argv)
                     if (rxpkt[i].status == STAT_CRC_OK) {
                         nb_pkt_crc_ok += 1;
                     }
-                    // printf("\n----- %s packet -----\n", (rxpkt[i].modulation == MOD_LORA) ? "LoRa" : "FSK");
-                    // printf("  count_us: %u\n", rxpkt[i].count_us);
-                    // printf("  size:     %u\n", rxpkt[i].size);
-                    // printf("  chan:     %u\n", rxpkt[i].if_chain);
-                    // printf("  status:   0x%02X\n", rxpkt[i].status);
-                    // printf("  datr:     %u\n", rxpkt[i].datarate);
-                    // printf("  codr:     %u\n", rxpkt[i].coderate);
-                    // printf("  rf_chain  %u\n", rxpkt[i].rf_chain);
-                    // printf("  freq_hz   %u\n", rxpkt[i].freq_hz);
-                    // printf("  snr_avg:  %.1f\n", rxpkt[i].snr);
-                    // printf("  rssi_chan:%.1f\n", rxpkt[i].rssic);
-                    // printf("  rssi_sig :%.1f\n", rxpkt[i].rssis);
-                    // printf("  crc:      0x%04X\n", rxpkt[i].crc);
+                    // fprintf(stderr,"\n----- %s packet -----\n", (rxpkt[i].modulation == MOD_LORA) ? "LoRa" : "FSK");
+                    // fprintf(stderr,"  count_us: %u\n", rxpkt[i].count_us);
+                    // fprintf(stderr,"  size:     %u\n", rxpkt[i].size);
+                    // fprintf(stderr,"  chan:     %u\n", rxpkt[i].if_chain);
+                    // fprintf(stderr,"  status:   0x%02X\n", rxpkt[i].status);
+                    // fprintf(stderr,"  datr:     %u\n", rxpkt[i].datarate);
+                    // fprintf(stderr,"  codr:     %u\n", rxpkt[i].coderate);
+                    // fprintf(stderr,"  rf_chain  %u\n", rxpkt[i].rf_chain);
+                    // fprintf(stderr,"  freq_hz   %u\n", rxpkt[i].freq_hz);
+                    // fprintf(stderr,"  snr_avg:  %.1f\n", rxpkt[i].snr);
+                    // fprintf(stderr,"  rssi_chan:%.1f\n", rxpkt[i].rssic);
+                    // fprintf(stderr,"  rssi_sig :%.1f\n", rxpkt[i].rssis);
+                    // fprintf(stderr,"  crc:      0x%04X\n", rxpkt[i].crc);
                     char mensaje[255];
                     for(int j = 9; j < rxpkt[i].size + 9; j++){
                         mensaje[j-9] = rxpkt[i].payload[j];
@@ -410,31 +410,31 @@ int main(int argc, char **argv)
 
                     write(STDERR_FILENO, mensaje, rxpkt[i].size - 9);
                     //}
-                    //printf("\n");
+                    //fprintf(stderr,"\n");
                 }
-                //printf("Received %d packets (total:%lu)\n", nb_pkt, nb_pkt_crc_ok);
+                //fprintf(stderr,"Received %d packets (total:%lu)\n", nb_pkt, nb_pkt_crc_ok);
             }
         }
 
-        //printf( "\nNb valid packets received: %lu CRC OK (%lu)\n", nb_pkt_crc_ok, cnt_loop );
+        //fprintf(stderr, "\nNb valid packets received: %lu CRC OK (%lu)\n", nb_pkt_crc_ok, cnt_loop );
 
         /* Stop the gateway */
         x = lgw_stop();
         if (x != 0) {
-            printf("ERROR: failed to stop the gateway\n");
+            fprintf(stderr,"ERROR: failed to stop the gateway\n");
             return EXIT_FAILURE;
         }
 
         if (com_type == LGW_COM_SPI) {
             /* Board reset */
             if (system("./reset_lgw.sh stop") != 0) {
-                printf("ERROR: failed to reset SX1302, check your reset_lgw.sh script\n");
+                fprintf(stderr,"ERROR: failed to reset SX1302, check your reset_lgw.sh script\n");
                 exit(EXIT_FAILURE);
             }
         }
     }
 
-    printf("=========== Test End ===========\n");
+    fprintf(stderr,"=========== Test End ===========\n");
 
     return 0;
 }
