@@ -408,7 +408,7 @@ int main(int argc, char **argv)
                         mensaje[j-9] = rxpkt[i].payload[j];
                     }
 
-                    write(STDERR_FILENO, mensaje, rxpkt[i].size - 9);
+                    write(STDOUT_FILENO, mensaje, rxpkt[i].size - 9);
                     //}
                     //fprintf(stderr,"\n");
                 }
