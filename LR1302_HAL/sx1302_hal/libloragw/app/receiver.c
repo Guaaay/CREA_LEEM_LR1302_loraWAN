@@ -59,32 +59,37 @@ static int quit_sig = 0; /* 1 -> application terminates without shutting down th
 /* -------------------------------------------------------------------------- */
 /* --- PRIVATE FUNCTIONS ---------------------------------------------------- */
 
-static void sig_handler(int sigio) {
-    if (sigio == SIGQUIT) {
+static void sig_handler(int sigio)
+{
+    if (sigio == SIGQUIT)
+    {
         quit_sig = 1;
-    } else if ((sigio == SIGINT) || (sigio == SIGTERM)) {
+    }
+    else if ((sigio == SIGINT) || (sigio == SIGTERM))
+    {
         exit_sig = 1;
     }
 }
 
-void usage(void) {
-    fprintf(stderr,"Library version information: %s\n", lgw_version_info());
-    fprintf(stderr,"Available options:\n");
-    fprintf(stderr," -h print this help\n");
-    fprintf(stderr," -u            set COM type as USB (default is SPI)\n");
-    fprintf(stderr," -d <path>     COM path to be used to connect the concentrator\n");
-    fprintf(stderr,"               => default path: " COM_PATH_DEFAULT "\n");
-    fprintf(stderr," -k <uint>     Concentrator clock source (Radio A or Radio B) [0..1]\n");
-    fprintf(stderr," -r <uint>     Radio type (1255, 1257, 1250)\n");
-    fprintf(stderr," -a <float>    Radio A RX frequency in MHz\n");
-    fprintf(stderr," -b <float>    Radio B RX frequency in MHz\n");
-    fprintf(stderr," -o <float>    RSSI Offset to be applied in dB\n");
-    fprintf(stderr," -n <uint>     Number of packet received with CRC OK for each HAL start/stop loop\n");
-    fprintf(stderr," -z <uint>     Size of the RX packet array to be passed to lgw_receive()\n");
-    fprintf(stderr," -m <uint>     Channel frequency plan mode [0:LoRaWAN-like, 1:Same frequency for all channels (-400000Hz on RF0)]\n");
-    fprintf(stderr," -j            Set radio in single input mode (SX1250 only)\n");
-    fprintf(stderr, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" );
-    fprintf(stderr," --fdd         Enable Full-Duplex mode (CN490 reference design)\n");
+void usage(void)
+{
+    fprintf(stderr, "Library version information: %s\n", lgw_version_info());
+    fprintf(stderr, "Available options:\n");
+    fprintf(stderr, " -h print this help\n");
+    fprintf(stderr, " -u            set COM type as USB (default is SPI)\n");
+    fprintf(stderr, " -d <path>     COM path to be used to connect the concentrator\n");
+    fprintf(stderr, "               => default path: " COM_PATH_DEFAULT "\n");
+    fprintf(stderr, " -k <uint>     Concentrator clock source (Radio A or Radio B) [0..1]\n");
+    fprintf(stderr, " -r <uint>     Radio type (1255, 1257, 1250)\n");
+    fprintf(stderr, " -a <float>    Radio A RX frequency in MHz\n");
+    fprintf(stderr, " -b <float>    Radio B RX frequency in MHz\n");
+    fprintf(stderr, " -o <float>    RSSI Offset to be applied in dB\n");
+    fprintf(stderr, " -n <uint>     Number of packet received with CRC OK for each HAL start/stop loop\n");
+    fprintf(stderr, " -z <uint>     Size of the RX packet array to be passed to lgw_receive()\n");
+    fprintf(stderr, " -m <uint>     Channel frequency plan mode [0:LoRaWAN-like, 1:Same frequency for all channels (-400000Hz on RF0)]\n");
+    fprintf(stderr, " -j            Set radio in single input mode (SX1250 only)\n");
+    fprintf(stderr, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    fprintf(stderr, " --fdd         Enable Full-Duplex mode (CN490 reference design)\n");
 }
 
 /* -------------------------------------------------------------------------- */
