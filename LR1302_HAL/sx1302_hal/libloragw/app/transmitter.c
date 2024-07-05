@@ -583,6 +583,7 @@ int main(int argc, char **argv)
                 pkt.payload[6] = (uint8_t)(i >> 0); /* FCnt */
                 pkt.payload[7] = (uint8_t)(i >> 8); /* FCnt */
                 printf("Sending...\n");
+                system("date +\"\%s\%3N\"");
                 x = lgw_send(&pkt);
                 if (x != 0) {
                     printf("ERROR: failed to send packet\n");
@@ -598,6 +599,7 @@ int main(int argc, char **argv)
                     break;
                 }
                 printf("TX done\n");
+                system("date +\"\%s\%3N\"");
             }
 
             //printf( "\nNb packets sent: %u (%u)\n", i, cnt_loop + 1 );
