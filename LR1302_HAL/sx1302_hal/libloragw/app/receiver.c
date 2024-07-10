@@ -111,7 +111,7 @@ int main(int argc, char **argv)
     unsigned int arg_u;
     uint8_t clocksource = 0;
     lgw_radio_type_t radio_type = LGW_RADIO_TYPE_NONE;
-    uint8_t max_rx_pkt = 16;
+    uint8_t max_rx_pkt = 1;
     bool single_input_mode = false;
     float rssi_offset = 0.0;
     bool full_duplex = false;
