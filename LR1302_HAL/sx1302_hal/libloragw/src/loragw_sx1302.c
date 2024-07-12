@@ -1870,18 +1870,18 @@ int sx1302_fetch(uint8_t * nb_pkt) {
         /* Initialize RX buffer */
         err = rx_buffer_new(&rx_buffer);
         if (err != LGW_REG_SUCCESS) {
-            printf("ERROR: Failed to initialize RX buffer\n");
+            fprintf(stderr, "ERROR: Failed to initialize RX buffer\n");
             return LGW_REG_ERROR;
         }
 
         /* Fetch RX buffer if any data available */
         err = rx_buffer_fetch(&rx_buffer);
         if (err != LGW_REG_SUCCESS) {
-            printf("ERROR: Failed to fetch RX buffer\n");
+            fprintf(stderr, "ERROR: Failed to fetch RX buffer\n");
             return LGW_REG_ERROR;
         }
     } else {
-        printf("Note: remaining %u packets in RX buffer, do not fetch sx1302 yet...\n", rx_buffer.buffer_pkt_nb);
+        fprintf(stderr, "Note: remaining %u packets in RX buffer, do not fetch sx1302 yet...\n", rx_buffer.buffer_pkt_nb);
     }
 
     /* Return the number of packet fetched */
@@ -1969,7 +1969,7 @@ int sx1302_parse(lgw_context_t * context, struct lgw_pkt_rx_s * p) {
                 if (p->size > 0) {
                     payload_crc16_calc = sx1302_lora_payload_crc(p->payload, p->size);
                     if (payload_crc16_calc != pkt.rx_crc16_value) {
-                        printf("ERROR: Payload CRC16 check failed (got:0x%04X calc:0x%04X)\n", pkt.rx_crc16_value, payload_crc16_calc);
+                        fprintf(stderr, "ERROR: Payload CRC16 check failed (got:0x%04X calc:0x%04X)\n", pkt.rx_crc16_value, payload_crc16_calc);
                         if (log_file != NULL) {
                             fprintf(log_file, "ERROR: Payload CRC16 check failed (got:0x%04X calc:0x%04X)\n", pkt.rx_crc16_value, payload_crc16_calc);
                             dbg_log_buffer_to_file(log_file, rx_buffer.buffer, rx_buffer.buffer_size);
@@ -2064,7 +2064,7 @@ int sx1302_parse(lgw_context_t * context, struct lgw_pkt_rx_s * p) {
                 break;
             default:
                 p->freq_offset = 0;
-                printf("Invalid frequency offset\n");
+                fprintf(stderr, "Invalid frequency offset\n");
                 break;
         }
 
@@ -2106,10 +2106,10 @@ int sx1302_parse(lgw_context_t * context, struct lgw_pkt_rx_s * p) {
         if (pkt.crc_en) {
             /* CRC enabled */
             if (pkt.payload_crc_error) {
-                printf("FSK: CRC ERR\n");
+                fprintf(stderr, "FSK: CRC ERR\n");
                 p->status = STAT_CRC_BAD;
             } else {
-                printf("FSK: CRC OK\n");
+                fprintf(stderr, "FSK: CRC OK\n");
                 p->status = STAT_CRC_OK;
             }
         } else {
