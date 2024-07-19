@@ -80,11 +80,13 @@ void usage(void) {
     fprintf(stderr," -b <float>    Radio B RX frequency in MHz\n");
     fprintf(stderr," -o <float>    RSSI Offset to be applied in dB\n");
     fprintf(stderr," -n <uint>     Number of packet received with CRC OK for each HAL start/stop loop\n");
+    fprintf(stderr," -n <uint>     Number of packet received with CRC OK for each HAL start/stop loop\n");
     fprintf(stderr," -z <uint>     Size of the RX packet array to be passed to lgw_receive()\n");
     fprintf(stderr," -m <uint>     Channel frequency plan mode [0:LoRaWAN-like, 1:Same frequency for all channels (-400000Hz on RF0)]\n");
     fprintf(stderr," -j            Set radio in single input mode (SX1250 only)\n");
-    fprintf(stderr, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" );
+    fprintf(stderr, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~s~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" );
     fprintf(stderr," --fdd         Enable Full-Duplex mode (CN490 reference design)\n");
+    fprintf(stderr," --br <uint>   Datarate for FSK comms\n");
 }
 
 /* -------------------------------------------------------------------------- */
@@ -114,6 +116,9 @@ int main(int argc, char **argv)
     struct lgw_conf_board_s boardconf;
     struct lgw_conf_rxrf_s rfconf;
     struct lgw_conf_rxif_s ifconf;
+
+    float xf = 0.0;
+    float br_kbps = 50;
 
     unsigned long nb_pkt_crc_ok = 0, nb_loop = 0, cnt_loop;
     int nb_pkt;
@@ -152,6 +157,7 @@ int main(int argc, char **argv)
     int option_index = 0;
     static struct option long_options[] = {
         {"fdd",  no_argument, 0, 0},
+        {"br",  no_argument, 0, 0},
         {0, 0, 0, 0}
     };
 
@@ -255,10 +261,21 @@ int main(int argc, char **argv)
                     rssi_offset = (float)arg_d;
                 }
                 break;
+
             case 0:
                 if (strcmp(long_options[option_index].name, "fdd") == 0) {
                     full_duplex = true;
-                } else {
+                }
+                else if(strcmp(long_options[option_index].name, "br") == 0){
+                    i = sscanf(optarg, "%f", &xf);
+                    if ((i != 1) || (xf < 0.5) || (xf > 250)) {
+                        printf("ERROR: invalid FSK bitrate\n");
+                        return EXIT_FAILURE;
+                    } else {
+                        br_kbps = xf;
+                    }
+                }
+                 else {
                     fprintf(stderr,"ERROR: argument parsing options. Use -h to print help\n");
                     return EXIT_FAILURE;
                 }
@@ -356,7 +373,7 @@ int main(int argc, char **argv)
         .rf_chain = 0,             // RF chain to be used for FSK
         .freq_hz = 0,              // Set the appropriate IF frequency
         .bandwidth = BW_125KHZ,    // Set the bandwidth (e.g., BW_125KHZ)
-        .datarate = 250000,         // Set the FSK datarate (e.g., 50000)
+        .datarate = br_kbps,         // Set the FSK datarate (e.g., 50000)
         .sync_word_size = 3,       // Set the sync word size (e.g., 3 bytes)
         .sync_word = 0xC194C1,     // Set the FSK sync word
         .implicit_hdr = false,     // Disable implicit header for LoRa (not applicable for FSK)
