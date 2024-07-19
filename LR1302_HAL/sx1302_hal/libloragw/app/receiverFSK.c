@@ -356,7 +356,7 @@ int main(int argc, char **argv)
         .rf_chain = 0,             // RF chain to be used for FSK
         .freq_hz = 0,              // Set the appropriate IF frequency
         .bandwidth = BW_125KHZ,    // Set the bandwidth (e.g., BW_125KHZ)
-        .datarate = 50000,         // Set the FSK datarate (e.g., 50000)
+        .datarate = 250000,         // Set the FSK datarate (e.g., 50000)
         .sync_word_size = 3,       // Set the sync word size (e.g., 3 bytes)
         .sync_word = 0xC194C1,     // Set the FSK sync word
         .implicit_hdr = false,     // Disable implicit header for LoRa (not applicable for FSK)
