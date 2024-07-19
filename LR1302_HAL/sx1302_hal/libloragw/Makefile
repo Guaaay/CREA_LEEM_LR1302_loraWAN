@@ -38,7 +38,8 @@ all: 	libloragw.a \
 		test_loragw_sx1261_rssi\
 		test_led \
 		transmitter \
-		receiver
+		receiver \
+		receiverFSK 
 
 clean:
 	rm -f libloragw.a
@@ -140,6 +141,10 @@ transmitter: app/transmitter.c libloragw.a
 
 receiver: app/receiver.c libloragw.a
 	$(CC) $(CFLAGS) -L. -L../libtools $< -o $@ $(LIBS)
+
+receiverFSK: app/receiverFSK.c libloragw.a
+	$(CC) $(CFLAGS) -L. -L../libtools $< -o $@ $(LIBS)
+
 
 test_loragw_com: tst/test_loragw_com.c libloragw.a
 	$(CC) $(CFLAGS) -L. -L../libtools $< -o $@ $(LIBS)

@@ -1,23 +1,41 @@
 
+# Pruebas LR1302
 
-Test rx 28/06/2024
+### Test rx 28/06/2024
 ```
 leem@raspberrypi5:~/LR1302_loraWAN/LR1302_HAL/sx1302_hal/libloragw $ sudo ./test_loragw_hal_rx -k 0 -a 868.5 -m 0 -r 1250
 ```
-
 
 ```
 sudo ./test_loragw_hal_tx -r 1250 -n 10 -n 1 -z 16 -m LORA -b 125 -j -l 10
 ./test_loragw_hal_rx -r 1250 -n 128 -m 0 -j
 ```
 
+### Test envio de imagen 05/07/2024
+Envio imagen LORA OK
+```
+./transmitter -r 1250 -n 1 -z 255 -m LORA -b 125 -j -l 10 -s 5 < ~/crea.jpg
+sudo ./receiver -r 1250 -n 128 -m 0 -z 255 2> crea.jpg
+```
 
+Tiempos de duración: 847ms, 831ms => 12kbps aprox
 
+### Test FSK ...
+```
+./transmitter -r 1250 -n 1 -z 255 -m FSK -c 0 < ~/crea.jpg
+```
+
+### Test FSK 19/07/24
+```
+./transmitter -r 1250 -n 1 -z 255 -m FSK --br 86 -b 250 -c 0 < ~/crea2.jpg
+
+sudo ./receiverFSK -r 1250 -n 128  -m 0 -z 255 --br 86 > crea2.jpg
+```
 
 
 # Transmisión de video por UART
 
-## Paso 1. Instalación de ppp
+### Paso 1. Instalación de ppp
 
 Inicialmente se ha de instalar el paquete ppp (point to point protocol) para crear una interfaz virtual de red por uart. Para ello configurar el archivo ```/etc/rc.local``` añadiendo configuración antes de ```exit 0``` (configurar baudeos por segundo, puerto UART y direcciones IP). Finalizada la configuración conectar los dispositivos fisicamente por uart, reiniciar y verificar mediante ```ifconfig``` la nueva interfaz de red
 
@@ -43,7 +61,7 @@ pppd /dev/ttyAMA0 460800 192.168.11.2:192.168.11.1 noauth local debug dump  nocr
 
 
 
-## Servidor de video:
+### Servidor de video:
 
 Crear un archivo fifo y un servidor de video ffmpeg redireccionado a un puerto
 
@@ -68,7 +86,7 @@ ffmpeg -i Video.mp4 -f mpegts -codec:v libx264 -s 640x480 -b:v 150k -r 30 -an - 
 ```
 
 
-## Cliente:
+### Cliente:
 
 Visualización del video desde el cliente
 
