@@ -25,8 +25,12 @@ Tiempos de duración: 847ms, 831ms => 12kbps aprox
 ./transmitter -r 1250 -n 1 -z 255 -m FSK -c 0 < ~/crea.jpg
 ```
 
+### Test FSK 19/07/24
+```
+./transmitter -r 1250 -n 1 -z 255 -m FSK --br 86 -b 250 -c 0 < ~/crea2.jpg
 
-
+sudo ./receiverFSK -r 1250 -n 128  -m 0 -z 255 --br 86 > crea2.jpg
+```
 
 
 # Transmisión de video por UART
