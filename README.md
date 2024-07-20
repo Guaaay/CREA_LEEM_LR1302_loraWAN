@@ -32,6 +32,13 @@ Tiempos de duración: 847ms, 831ms => 12kbps aprox
 sudo ./receiverFSK -r 1250 -n 128  -m 0 -z 255 --br 86 > crea2.jpg
 ```
 
+### Test FSK 20/07/24
+```
+./transmitter -r 1250 -n 1 -z 255 -m FSK --br 100 -c 0 --pwid 22 --pa 0 -p 22 -f 868.8 < ~/crea2.jpg
+sudo ./receiverFSK -r 1250 -n 128 -m 0 -z 255 --br 100 -a 868.8 -b 868.8 > crea2.jpg
+```
+(82.66 kbps, 2032.487 ms) Branch: dev-andres, commit 19e514a, Remove timestamp
+
 
 # Transmisión de video por UART
 
