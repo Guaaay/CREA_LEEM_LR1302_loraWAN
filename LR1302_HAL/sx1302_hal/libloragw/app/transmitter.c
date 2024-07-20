@@ -519,12 +519,16 @@ int main(int argc, char **argv)
     pkt.payload[6] = 0; /* FCnt */
     pkt.payload[7] = 0; /* FCnt */
     pkt.payload[8] = 0x02; /* FPort */
+    pkt.bandwidth = BW_125KHZ;
+    pkt.payload[6] = (uint8_t)(0 >> 0); /* FCnt */
+    pkt.payload[7] = (uint8_t)(0 >> 8); /* FCnt */
 
 
     //BUCLE PRINCIPAL DE LECTURA DE STDIN:
     while((quit_sig != 1) && (exit_sig != 1)){
         //Leemos bytes de stdin y los transmitimos
         int nbytes = read(STDIN_FILENO, buffer, sizeof(buffer));
+
         if (nbytes > 0) {
 
             //Enviamos los bytes recibidos por STDIN
@@ -532,25 +536,19 @@ int main(int argc, char **argv)
                 pkt.payload[i+9] = buffer[i];
             }
 
-            for (i = 0; i < (int)nb_pkt; i++) {
+            pkt.size = 9 + nbytes;//(size == 0) ? (uint8_t)RAND_RANGE(9, 255) : size;
 
-                pkt.bandwidth = BW_125KHZ;
-                pkt.size = 9 + nbytes;//(size == 0) ? (uint8_t)RAND_RANGE(9, 255) : size;
-
-                pkt.payload[6] = (uint8_t)(i >> 0); /* FCnt */
-                pkt.payload[7] = (uint8_t)(i >> 8); /* FCnt */
-                system("date +\"\%s\%3N\"");
-                x = lgw_send(&pkt);
-                if (x != 0) {
-                    printf("ERROR: failed to send packet\n");
-                    break;
-                }
-                /* wait for packet to finish sending */
-                do {
-                    // wait_ms(1);
-                    lgw_status(pkt.rf_chain, TX_STATUS, &tx_status); /* get TX status */
-                } while ((tx_status != TX_FREE) && (quit_sig != 1) && (exit_sig != 1));
+            system("date +\"\%s\%3N\"");
+            x = lgw_send(&pkt);
+            if (x != 0) {
+                printf("ERROR: failed to send packet\n");
+                continue;
             }
+            /* wait for packet to finish sending */
+            do {
+                // wait_ms(1);
+                lgw_status(pkt.rf_chain, TX_STATUS, &tx_status); /* get TX status */
+            } while ((tx_status != TX_FREE) && (quit_sig != 1) && (exit_sig != 1));
 
             //printf( "\nNb packets sent: %u (%u)\n", i, cnt_loop + 1 );
 
