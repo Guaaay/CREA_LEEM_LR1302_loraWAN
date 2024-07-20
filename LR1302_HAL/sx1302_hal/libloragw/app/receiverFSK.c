@@ -428,7 +428,7 @@ int main(int argc, char **argv)
                         nb_pkt_crc_ok += 1;
                     }
                     // fprintf(stderr,"\n----- %s packet -----\n", (rxpkt[i].modulation == MOD_LORA) ? "LoRa" : "FSK");
-                    fprintf(stderr,"  count_us: %u\n", rxpkt[i].count_us);
+                    // fprintf(stderr,"  count_us: %u\n", rxpkt[i].count_us);
                     // fprintf(stderr,"  size:     %u\n", rxpkt[i].size);
                     // fprintf(stderr,"  chan:     %u\n", rxpkt[i].if_chain);
                     // fprintf(stderr,"  status:   0x%02X\n", rxpkt[i].status);
@@ -441,9 +441,7 @@ int main(int argc, char **argv)
                     // fprintf(stderr,"  rssi_sig :%.1f\n", rxpkt[i].rssis);
                     // fprintf(stderr,"  crc:      0x%04X\n", rxpkt[i].crc);
                     char mensaje[255];
-                    for(int j = 9; j < rxpkt[i].size + 9; j++){
-                        mensaje[j-9] = rxpkt[i].payload[j];
-                    }
+                    memcpy(mensaje, rxpkt[i].payload + 9, rxpkt[i].size - 9);
 
                     write(STDOUT_FILENO, mensaje, rxpkt[i].size - 9);
                     //}
