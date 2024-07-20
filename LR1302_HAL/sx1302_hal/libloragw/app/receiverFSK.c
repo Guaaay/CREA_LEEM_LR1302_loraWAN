@@ -421,25 +421,25 @@ int main(int argc, char **argv)
             nb_pkt = lgw_receive(ARRAY_SIZE(rxpkt), rxpkt);
 
             if (nb_pkt == 0) {
-                wait_ms(1);
+                // wait_ms(1);
             } else {
                 for (i = 0; i < 1; i++) {
                     if (rxpkt[i].status == STAT_CRC_OK) {
                         nb_pkt_crc_ok += 1;
                     }
-                    fprintf(stderr,"\n----- %s packet -----\n", (rxpkt[i].modulation == MOD_LORA) ? "LoRa" : "FSK");
+                    // fprintf(stderr,"\n----- %s packet -----\n", (rxpkt[i].modulation == MOD_LORA) ? "LoRa" : "FSK");
                     fprintf(stderr,"  count_us: %u\n", rxpkt[i].count_us);
-                    fprintf(stderr,"  size:     %u\n", rxpkt[i].size);
-                    fprintf(stderr,"  chan:     %u\n", rxpkt[i].if_chain);
-                    fprintf(stderr,"  status:   0x%02X\n", rxpkt[i].status);
-                    fprintf(stderr,"  datr:     %u\n", rxpkt[i].datarate);
-                    fprintf(stderr,"  codr:     %u\n", rxpkt[i].coderate);
-                    fprintf(stderr,"  rf_chain  %u\n", rxpkt[i].rf_chain);
-                    fprintf(stderr,"  freq_hz   %u\n", rxpkt[i].freq_hz);
-                    fprintf(stderr,"  snr_avg:  %.1f\n", rxpkt[i].snr);
-                    fprintf(stderr,"  rssi_chan:%.1f\n", rxpkt[i].rssic);
-                    fprintf(stderr,"  rssi_sig :%.1f\n", rxpkt[i].rssis);
-                    fprintf(stderr,"  crc:      0x%04X\n", rxpkt[i].crc);
+                    // fprintf(stderr,"  size:     %u\n", rxpkt[i].size);
+                    // fprintf(stderr,"  chan:     %u\n", rxpkt[i].if_chain);
+                    // fprintf(stderr,"  status:   0x%02X\n", rxpkt[i].status);
+                    // fprintf(stderr,"  datr:     %u\n", rxpkt[i].datarate);
+                    // fprintf(stderr,"  codr:     %u\n", rxpkt[i].coderate);
+                    // fprintf(stderr,"  rf_chain  %u\n", rxpkt[i].rf_chain);
+                    // fprintf(stderr,"  freq_hz   %u\n", rxpkt[i].freq_hz);
+                    // fprintf(stderr,"  snr_avg:  %.1f\n", rxpkt[i].snr);
+                    // fprintf(stderr,"  rssi_chan:%.1f\n", rxpkt[i].rssic);
+                    // fprintf(stderr,"  rssi_sig :%.1f\n", rxpkt[i].rssis);
+                    // fprintf(stderr,"  crc:      0x%04X\n", rxpkt[i].crc);
                     char mensaje[255];
                     for(int j = 9; j < rxpkt[i].size + 9; j++){
                         mensaje[j-9] = rxpkt[i].payload[j];
