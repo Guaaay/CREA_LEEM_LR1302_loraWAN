@@ -532,13 +532,14 @@ int main(int argc, char **argv)
         if (nbytes > 0) {
 
             //Enviamos los bytes recibidos por STDIN
-            for (i = 0; i < nbytes; i++) {
-                pkt.payload[i+9] = buffer[i];
-            }
+            // for (i = 0; i < nbytes; i++) {
+            //     pkt.payload[i+9] = buffer[i];
+            // }
 
+            memcpy(pkt.payload + 9, buffer, nbytes);
             pkt.size = 9 + nbytes;//(size == 0) ? (uint8_t)RAND_RANGE(9, 255) : size;
 
-            system("date +\"\%s\%3N\"");
+            // system("date +\"\%s\%3N\"");
             x = lgw_send(&pkt);
             if (x != 0) {
                 printf("ERROR: failed to send packet\n");
