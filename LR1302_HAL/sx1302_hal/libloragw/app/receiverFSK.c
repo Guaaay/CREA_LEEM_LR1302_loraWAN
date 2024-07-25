@@ -336,25 +336,25 @@ int main(int argc, char **argv)
     }
 
     /* set configuration for LoRa multi-SF channels (bandwidth cannot be set) */
-    memset(&ifconf, 0, sizeof(ifconf));
-    for (i = 0; i < 8; i++) {
-        ifconf.enable = true;
-        if (channel_mode == 0) {
-            ifconf.rf_chain = channel_rfchain_mode0[i];
-            ifconf.freq_hz = channel_if_mode0[i];
-        } else if (channel_mode == 1) {
-            ifconf.rf_chain = channel_rfchain_mode1[i];
-            ifconf.freq_hz = channel_if_mode1[i];
-        } else {
-            fprintf(stderr,"ERROR: channel mode not supported\n");
-            return EXIT_FAILURE;
-        }
-        ifconf.datarate = DR_LORA_SF7;
-        if (lgw_rxif_setconf(i, &ifconf) != LGW_HAL_SUCCESS) {
-            fprintf(stderr,"ERROR: failed to configure rxif %d\n", i);
-            return EXIT_FAILURE;
-        }
-    }
+    // memset(&ifconf, 0, sizeof(ifconf));
+    // for (i = 0; i < 8; i++) {
+    //     ifconf.enable = true;
+    //     if (channel_mode == 0) {
+    //         ifconf.rf_chain = channel_rfchain_mode0[i];
+    //         ifconf.freq_hz = channel_if_mode0[i];
+    //     } else if (channel_mode == 1) {
+    //         ifconf.rf_chain = channel_rfchain_mode1[i];
+    //         ifconf.freq_hz = channel_if_mode1[i];
+    //     } else {
+    //         fprintf(stderr,"ERROR: channel mode not supported\n");
+    //         return EXIT_FAILURE;
+    //     }
+    //     ifconf.datarate = DR_LORA_SF7;
+    //     if (lgw_rxif_setconf(i, &ifconf) != LGW_HAL_SUCCESS) {
+    //         fprintf(stderr,"ERROR: failed to configure rxif %d\n", i);
+    //         return EXIT_FAILURE;
+    //     }
+    // }
 
     /* set configuration for LoRa Service channel */
     memset(&ifconf, 0, sizeof(ifconf));
@@ -382,9 +382,11 @@ int main(int argc, char **argv)
         .implicit_coderate = CR_UNDEFINED,
     };
 
-    if (lgw_rxif_setconf(9, &fsk_ifconf) != LGW_HAL_SUCCESS) {
-        fprintf(stderr,"ERROR: failed to configure FSK for channel 10\n");
-        return EXIT_FAILURE;
+    for (i = 0; i < 10; i++) {
+        if (lgw_rxif_setconf(i, &fsk_ifconf) != LGW_HAL_SUCCESS) {
+            fprintf(stderr,"ERROR: failed to configure FSK for channel 9\n");
+            return EXIT_FAILURE;
+        }
     }
 
     /* set the buffer size to hold received packets */
