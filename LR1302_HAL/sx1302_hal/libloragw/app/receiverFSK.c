@@ -369,10 +369,10 @@ int main(int argc, char **argv)
 
     // Configuration structure for the FSK channel
     struct lgw_conf_rxif_s fsk_ifconf = {
-        .enable = true,            // Enable the IF chain
+        .enable = false,            // Enable the IF chain
         .rf_chain = 0,             // RF chain to be used for FSK
         .freq_hz = 0,              // Set the appropriate IF frequency
-        .bandwidth = BW_500KHZ,    // Set the bandwidth (e.g., BW_125KHZ)
+        .bandwidth = BW_125KHZ,    // Set the bandwidth (e.g., BW_125KHZ)
         .datarate = br_kbps*1000,         // Set the FSK datarate (e.g., 50000)
         .sync_word_size = 3,       // Set the sync word size (e.g., 3 bytes)
         .sync_word = 0xC194C1,     // Set the FSK sync word
