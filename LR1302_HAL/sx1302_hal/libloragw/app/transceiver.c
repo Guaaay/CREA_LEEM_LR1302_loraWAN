@@ -20,11 +20,13 @@ Programa con capacidad de recepción y transmisión "simultáneas" (todavía no 
 #include <stdbool.h>        /* bool type */
 #include <stdio.h>          /* printf, fprintf, snprintf, fopen, fputs */
 #include <inttypes.h>       /* PRIx64, PRIu64... */
+#include <fcntl.h>          /* file control options */  
 
 #include <string.h>         /* memset */
 #include <signal.h>         /* sigaction */
 #include <time.h>           /* time, clock_gettime, strftime, gmtime */
 #include <sys/time.h>       /* timeval */
+#include <sys/ioctl.h>      /* ioctl */
 #include <unistd.h>         /* getopt, access */
 #include <stdlib.h>         /* atoi, exit */
 #include <errno.h>          /* error messages */
@@ -48,17 +50,54 @@ Programa con capacidad de recepción y transmisión "simultáneas" (todavía no 
 #include "loragw_gps.h"
 
 #define TUN "/dev/net/tun"
+#define COM_PATH_DEFAULT "/dev/spidev0.0"
+
+int tun_fd;
 
 void thread_rx(void);
 void thread_tx(void);
 
-int conectar_tun(){
+
+void configurar_lr1302(){
+    struct lgw_conf_board_s boardconf;
+    const char com_path_default[] = COM_PATH_DEFAULT;
+    const char * com_path = com_path_default;
+
+    memset( &boardconf, 0, sizeof boardconf);
+    boardconf.lorawan_public = true;
+    boardconf.clksrc = 0;
+    boardconf.full_duplex = true;
+    boardconf.com_type = LGW_COM_SPI;
+    strncpy(boardconf.com_path, com_path, sizeof boardconf.com_path);
+    boardconf.com_path[sizeof boardconf.com_path - 1] = '\0'; /* ensure string termination */
+    if (lgw_board_setconf(&boardconf) != LGW_HAL_SUCCESS) {
+        printf("ERROR: failed to configure board\n");
+        return EXIT_FAILURE;
+    }
+
+    
+}
+
+int conectar_tun(char * dev){
     struct ifreq ifr;
     int fd;
-    if ((fd = open(TUN_DEVICE, O_RDWR)) < 0) {
-        perror("Opening TUN device");
+    int err;
+    if ((fd = open(TUN, O_RDWR)) < 0) {
+        perror("Abriendo dispositivo TUN");
         exit(1);
     }
+    memset(&ifr, 0, sizeof(ifr));
+    ifr.ifr_flags = IFF_TUN | IFF_NO_PI;
+    if (*dev){
+        strncpy(ifr.ifr_name, dev, IFNAMSIZ);
+    }
+    if ((err = ioctl(fd, TUNSETIFF, (void *)&ifr)) < 0) {
+        close(fd);
+        perror("ioctl(TUNSETIFF)");
+        exit(1);
+    }
+    strcpy(dev, ifr.ifr_name);
+
     return fd;
 }
 
@@ -67,13 +106,22 @@ int main(int argc, char ** argv)
     struct sigaction sigact; /* SIGQUIT&SIGINT&SIGTERM signal handling */
     pthread_t thrid_rx;
     pthread_t thrid_tx;
-    
+    char devname[IFNAMSIZ] = "tun0";
+    tun_fd = conectar_tun(devname);
+    pthread_create(&thrid_rx, NULL, thread_rx, NULL);
+    pthread_create(&thrid_tx, NULL, thread_tx, NULL);
 
+    pthread_join(thrid_rx, NULL);
+    pthread_join(thrid_tx, NULL);
 
 }
 
 
 void thread_rx(void) {
 
+
+}
+
+void thread_tx(void) {
 
 }
