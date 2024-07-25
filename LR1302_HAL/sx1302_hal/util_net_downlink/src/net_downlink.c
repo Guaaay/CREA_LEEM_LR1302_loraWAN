@@ -77,7 +77,7 @@
 #define DEFAULT_LORA_BW             125     /* LoRa modulation bandwidth, kHz */
 #define DEFAULT_LORA_SF             7       /* LoRa SF */
 #define DEFAULT_LORA_CR             "4/5"   /* LoRa CR */
-#define DEFAULT_FSK_FDEV            25      /* FSK frequency deviation */
+#define DEFAULT_FSK_FDEV            150      /* FSK frequency deviation */
 #define DEFAULT_FSK_BR              50      /* FSK bitrate */
 #define DEFAULT_LORA_PREAMBLE_SIZE  8       /* LoRa preamble size */
 #define DEFAULT_PAYLOAD_SIZE        4       /* payload size, bytes */

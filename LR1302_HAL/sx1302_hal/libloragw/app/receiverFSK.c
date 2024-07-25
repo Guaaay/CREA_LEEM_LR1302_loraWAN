@@ -149,7 +149,7 @@ int main(int argc, char **argv)
         -400000 /* lora service */
     };
 
-    const uint8_t channel_rfchain_mode0[9] = { 1, 1, 1, 0, 0, 0, 0, 0, 1 };
+    const uint8_t channel_rfchain_mode0[9] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     const uint8_t channel_rfchain_mode1[9] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
@@ -370,7 +370,7 @@ int main(int argc, char **argv)
     // Configuration structure for the FSK channel
     struct lgw_conf_rxif_s fsk_ifconf = {
         .enable = true,            // Enable the IF chain
-        .rf_chain = 0,             // RF chain to be used for FSK
+        .rf_chain = 1,             // RF chain to be used for FSK
         .freq_hz = 0,              // Set the appropriate IF frequency
         .bandwidth = BW_500KHZ,    // Set the bandwidth (e.g., BW_125KHZ)
         .datarate = br_kbps*1000,         // Set the FSK datarate (e.g., 50000)
@@ -421,7 +421,7 @@ int main(int argc, char **argv)
             nb_pkt = lgw_receive(ARRAY_SIZE(rxpkt), rxpkt);
 
             if (nb_pkt == 0) {
-                wait_ms(1);
+                // wait_ms(1);
             } else {
                 for (i = 0; i < 1; i++) {
                     if (rxpkt[i].status == STAT_CRC_OK) {
@@ -441,9 +441,7 @@ int main(int argc, char **argv)
                     // fprintf(stderr,"  rssi_sig :%.1f\n", rxpkt[i].rssis);
                     // fprintf(stderr,"  crc:      0x%04X\n", rxpkt[i].crc);
                     char mensaje[255];
-                    for(int j = 9; j < rxpkt[i].size + 9; j++){
-                        mensaje[j-9] = rxpkt[i].payload[j];
-                    }
+                    memcpy(mensaje, rxpkt[i].payload + 9, rxpkt[i].size - 9);
 
                     write(STDOUT_FILENO, mensaje, rxpkt[i].size - 9);
                     //}
