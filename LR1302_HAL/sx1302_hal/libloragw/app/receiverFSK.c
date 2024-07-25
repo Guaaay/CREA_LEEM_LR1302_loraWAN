@@ -416,6 +416,7 @@ int main(int argc, char **argv)
         /* Loop until we have enough packets with CRC OK */
         fprintf(stderr,"Waiting for packets...\n");
         nb_pkt_crc_ok = 0;
+        int n_packets = 0;
         while ((quit_sig != 1) && (exit_sig != 1)) {
             /* fetch N packets */
             nb_pkt = lgw_receive(ARRAY_SIZE(rxpkt), rxpkt);
@@ -423,7 +424,7 @@ int main(int argc, char **argv)
             if (nb_pkt == 0) {
                 // wait_ms(1);
             } else {
-                for (i = 0; i < 8; i++) {
+                for (i = 0; i < nb_pkt; i++) {
                     if (rxpkt[i].status == STAT_CRC_OK) {
                         nb_pkt_crc_ok += 1;
                     }
@@ -444,6 +445,7 @@ int main(int argc, char **argv)
                     memcpy(mensaje, rxpkt[i].payload + 9, rxpkt[i].size - 9);
 
                     write(STDOUT_FILENO, mensaje, rxpkt[i].size - 9);
+                    n_packets++;
                     //}
                     //fprintf(stderr,"\n");
                 }////
@@ -452,7 +454,7 @@ int main(int argc, char **argv)
         }
 
         //fprintf(stderr, "\nNb valid packets received: %lu CRC OK (%lu)\n", nb_pkt_crc_ok, cnt_loop );
-
+        fprintf(stderr, "\nPaquetes recibidos: %d\n", n_packets);
         /* Stop the gateway */
         x = lgw_stop();
         if (x != 0) {
