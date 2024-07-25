@@ -446,7 +446,7 @@ int main(int argc, char **argv)
                     write(STDOUT_FILENO, mensaje, rxpkt[i].size - 9);
                     //}
                     //fprintf(stderr,"\n");
-                }
+                }////
                 //fprintf(stderr,"Received %d packets (total:%lu)\n", nb_pkt, nb_pkt_crc_ok);
             }
         }
