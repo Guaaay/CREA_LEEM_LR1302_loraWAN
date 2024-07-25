@@ -149,7 +149,7 @@ int main(int argc, char **argv)
         -400000 /* lora service */
     };
 
-    const uint8_t channel_rfchain_mode0[9] = { 1, 1, 1, 0, 0, 0, 0, 0, 1 };
+    const uint8_t channel_rfchain_mode0[9] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
     const uint8_t channel_rfchain_mode1[9] = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
@@ -369,8 +369,8 @@ int main(int argc, char **argv)
 
     // Configuration structure for the FSK channel
     struct lgw_conf_rxif_s fsk_ifconf = {
-        .enable = false,            // Enable the IF chain
-        .rf_chain = 0,             // RF chain to be used for FSK
+        .enable = true,            // Enable the IF chain
+        .rf_chain = 1,             // RF chain to be used for FSK
         .freq_hz = 0,              // Set the appropriate IF frequency
         .bandwidth = BW_125KHZ,    // Set the bandwidth (e.g., BW_125KHZ)
         .datarate = br_kbps*1000,         // Set the FSK datarate (e.g., 50000)
